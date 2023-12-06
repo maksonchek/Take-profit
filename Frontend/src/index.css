@@ -1,6 +1,5 @@
 html {
   min-height: 100%;
-  font-family: sans-serif;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -8,9 +7,8 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Cormorant Garamond', serif;
+  font-family: 'JetBrains Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100%;
@@ -20,29 +18,26 @@ body {
   height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+
 
 .nav {
-  background: radial-gradient(circle at 10% 20%, rgb(221, 49, 49) 0%, rgb(119, 0, 0) 90%);
   color: white;
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
-  gap: 2rem;
+  align-items: center;
   padding: 0 1rem;
+  height: 10vh;
+  position: fixed;
+  width: 95%;
 }
 
 
 .nav ul {
-  padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
-  gap: 1rem;
-
+  gap: 3rem;
+  padding: 0 1rem;
 }
 
 .link {
@@ -51,7 +46,7 @@ code {
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0.25rem;
+  font-size: 1.3rem;
 }
 
 
@@ -60,7 +55,7 @@ code {
 }
 
 .site-title:hover {
-  background-color: #777;
+  text-decoration: underline;
 }
 
 .nav li.active {
@@ -68,7 +63,7 @@ code {
 }
 
 .nav li:hover {
-  background-color: #777;
+  text-decoration: underline;
 }
 
 .homePage {
@@ -85,6 +80,9 @@ code {
   padding: 0px auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .content {
@@ -92,13 +90,80 @@ code {
   min-height: 100%;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
   height: 100%;
-  border: 1px red solid;
   flex-grow: 1;
+  width: 100%;
+}
+
+.authorizationBox {
+  margin-left: 5vw;
+  padding: 10px 5px;
+  font-size: 1.5rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+  border-radius: 10px;
+  height: 30vh;
 }
 
 #root {
   height: auto;
-  /* These two lines were the key. */
   min-height: 100%;
+}
+
+.input {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.homePage {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-image: url('../public/backgroundImage.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.enterButton {
+  width: 50%;
+  height: 7vh;
+  font-family: 'Cormorant Garamond', serif;
+  font-family: 'JetBrains Mono', monospace;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.slogan {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40vw;
+}
+
+.bigText {
+  font-size: 2rem;
+  color: white;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.mediumText {
+  font-weight: 500;
+  color: white;
+}
+
+.botPage {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: radial-gradient(circle at 50.4% 50.5%, rgb(251, 32, 86) 0%, rgb(135, 2, 35) 90%);
+  height: 100%;
+  width: 100%;
 }

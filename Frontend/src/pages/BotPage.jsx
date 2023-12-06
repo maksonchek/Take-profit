@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export function Bot() {
     return (
-        <div>
+        <div className='botPage'>
             Это страница с ботом
         </div>
     )
