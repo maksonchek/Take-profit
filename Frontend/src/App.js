@@ -7,9 +7,9 @@ import { Statistics } from "./pages/StatisticsPage";
 
 function App() {
   return (
-    <div>
+    <div className="wrapper">
       <Header />
-      <div className="App">
+      <div className="content">
         <Routes>
           <Route path='/' element={<Home></Home>}></Route>
           <Route path='/guide' element={<Guide></Guide>}></Route>

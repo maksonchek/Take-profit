@@ -21,8 +21,13 @@ export function Home() {
 
 
     return (
-        <div>
-            <button onClick={fetchData}>POST запрос</button>
+        <div className='homePage'>
+            <div className='authorizationBox'>
+                <p>Логин</p>
+                <input type='text'></input>
+                <p>Пароль</p>
+                <input type='password'></input>
+            </div>
         </div>
     )
 }
