@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const hostUrl = 'http://192.168.246.21:8080/api'
 
-export function Home() {
+export function Home({ setGlobalLogin }) {
 
     const [login, setLogin] = useState('');
 
@@ -13,21 +13,28 @@ export function Home() {
 
     const navigate = useNavigate();
 
-    const fetchData = async () => {
-        const response = await axios.get('http://192.168.0.101:8080', {
-            headers: {
-                'Accept': 'application/json'
-            },
-        });
 
-        const message = response.data.some
-
-        console.log(message)
-    }
-
-    const Click = () => {
+    const Click = async () => {
         if (password && login) {
-            navigate('bot')
+            try {
+                const response = await axios.post('http://192.168.0.107:8080/register_user',
+                    {
+                        login: login,
+                        password: password
+                    },
+                    {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                setGlobalLogin(login);
+                navigate('/bot')
+            }
+            catch (err) {
+                alert('Возникла ошибка попробуйте снова через некоторое время')
+                console.log(err)
+            }
         }
         else {
             alert('Введите пароль и логин')
