@@ -1,3 +1,4 @@
 flask
 moexalgo
 flask_cors
+pandas
