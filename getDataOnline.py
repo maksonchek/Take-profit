@@ -142,8 +142,8 @@ def start(tickers, day_stop):
                 'cancel_orders',
                 'SYSTIME']
 
-   # now_day = datetime.date.today() #сегодня   
-   now_day = datetime.date(2023, 12, 3) 
+   now_day = datetime.date.today() #сегодня   
+   # now_day = datetime.date(2023, 12, 3) 
    while True: #now_day < day_stop:
    
         now_day = datetime.date.today() #сегодня
