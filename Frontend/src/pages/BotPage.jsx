@@ -5,6 +5,9 @@ import axios from "axios";
 import { HiBan } from "react-icons/hi";
 import { HiCheckCircle } from "react-icons/hi";
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import { ToolTip } from '../components/Tooltip';
+
+const url = 'https://webservice-57a4.onrender.com';
 
 
 export function Bot({ login }) {
@@ -13,8 +16,75 @@ export function Bot({ login }) {
         console.log(login)
     }, [])
     const [companyShares, setCompanyShares] = useState([
-        { name: 'sber' },
-        { name: 'tinkoff' }
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'TINKOFF',
+            amount: 3,
+            price: 150,
+            action: 'sale',
+            date: '2023-09-12T00:15:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        }, {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        },
+        {
+            name: 'SBER',
+            amount: 5,
+            price: 100,
+            action: 'purchase',
+            date: '2023-09-12T00:10:10'
+        }
     ]);
 
     const [capital, setCapital] = useState(null);
@@ -38,6 +108,21 @@ export function Bot({ login }) {
         }
     }
 
+    const sendPost = async () => {
+        try {
+            const response = await axios.get(url + '/' + login + '/trading/stats',
+                {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(data => { console.log(data); setCompanyShares(data) });
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
     const acceptSettings = async () => {
         if (active) {
             try {
@@ -48,12 +133,13 @@ export function Bot({ login }) {
                     (validation(0, 1000, daysOfTrade) || daysOfTrade === null)
                     &&
                     algorithm) {
-                    const response = await axios.post('http://192.168.0.107:8080/' + login + '/trading', {
-                        fond: capital,
-                        percentOfPossibleLoss: procentOfPossibleLoss,
-                        daysOfTrade: daysOfTrade || 0,
-                        algorithmNum: algorithm
-                    }, {
+                    const response = await axios.post(url + '/' + login + '/trading',
+                        {
+                            fond: capital,
+                            percentOfPossibleLoss: procentOfPossibleLoss,
+                            daysOfTrade: daysOfTrade || 0,
+                            algorithmNum: algorithm,
+                        }, {
                         headers: {
                             'Accept': 'application/json'
                         }
@@ -84,24 +170,82 @@ export function Bot({ login }) {
 
     }
 
+    const runBot = async () => {
+        if (!active) {
+            try {
+
+                const response = await axios.post(url + '/' + login + '/trading' + '/startbot',
+                    {
+                        command: botIsRunning ? 'stop' : 'start'
+                    }, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(data => console.log(data))
+
+
+
+                if (botIsRunning) {
+                    setBotIsRunning(false);
+                    console.log(botIsRunning)
+                }
+                else {
+                    setBotIsRunning(true);
+                    console.log(botIsRunning)
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+        else {
+            alert('Введите настройки')
+        }
+    }
+
     return (
         <div className='botPage'>
             <div className='investMenu'>
-                <ul className='companySharesList'>
-                    {companyShares.map(share => <li>{share.name}</li>)}
-                </ul>
+                <table className='tableShare'>
+                    <tr style={{ background: '#ff0507', color: 'white', height: '4vh' }}>
+                        <td align='middle' >Название акции</td>
+                        <td align='middle' valign='middle'>Количество акций</td>
+                        <td align='middle' valign='middle'>Цена</td>
+                        <td align='middle' valign='middle'>Тип операции</td>
+                        <td align='middle' valign='middle'>Дата</td>
+                    </tr>
+                    {companyShares.map((share) => {
+                        return <tr style={{ height: '3vh' }}>
+                            <td align='middle' valign='middle'>{share.name}</td>
+                            <td align='middle' valign='middle'>{share.amount}</td>
+                            <td align='middle' valign='middle'>{share.price}</td>
+                            <td align='middle' valign='middle'>{share.action}</td>
+                            <td align='middle' valign='middle'>{share.date}</td>
+                        </tr>
+                    })}
+                </table>
+
             </div>
             <div className='botSettings'>
                 <div className="settingsInputDiv">
+                    <label className='settingsLabel'> Капитал (Тыс. рублей)<div className='tooltip'><HiOutlineInformationCircle className='icon'
+                    />
+                        <p className='tooltiptext'>Сумма денег, которая дается в распоряжение алгоритму, как начальная</p>
+                    </div>
+                    </label>
 
-                    <label className='settingsLabel'> Капитал (Тыс. рублей)<HiOutlineInformationCircle className='icon' /></label>
                     <div className='input'>
                         <input disabled={!active} onChange={(e) => { setCapital(e.target.value) }} type='number' min='1' max='1000' className='settingsInput'></input>
                         {validation(1, 1000, capital) ? <HiCheckCircle color='green' className='icon' /> : <HiBan color='red' className='icon' />}
                     </div>
                 </div>
                 <div className="settingsInputDiv">
-                    <label className='settingsLabel'>Процент допустимых потерь <HiOutlineInformationCircle className='icon' /></label>
+                    <label className='settingsLabel'>Процент допустимых потерь
+                        <div className='tooltip'>
+                            <HiOutlineInformationCircle className='icon' />
+                            <p className='tooltiptext'>Часть от начальной суммы потеря, которой считается допустимой при торговле. Если алгоритм понесет потери больше допустимых, то алгоритм прекратит работу</p>
+                        </div>
+                    </label>
                     <div className='input'>
                         <input disabled={!active} onChange={(e) => { setProcentOfPossibleLoss(e.target.value) }} min='0' max='100' type='number' className='settingsInput'></input>
                         {validation(0, 100, procentOfPossibleLoss) ? <HiCheckCircle color='green' className='icon' /> : <HiBan color='red' className='icon' />}
@@ -109,7 +253,11 @@ export function Bot({ login }) {
                 </div>
 
                 <div className="settingsInputDiv">
-                    <label className='settingsLabel'>Срок торговли (Дней) <HiOutlineInformationCircle className='icon' /></label>
+                    <label className='settingsLabel'>Срок торговли (Дней)
+                        <div className='tooltip'>
+                            <HiOutlineInformationCircle className='icon' />
+                            <p className='tooltiptext'>Не является обязательным параметром. Кол-во дней, в течение которых будет вестись торговля. Если не установить его, то торговля будет продолжаться пока алгоритм не будет остановлен вручную, либо пока алгоритм не выйдет за пределы по допустимым потерям</p>
+                        </div></label>
                     <div className='input' >
                         <input disabled={!active} onChange={(e) => { setDaysOfTrade(e.target.value) }} type='number' min='1' max='365' className='settingsInput'></input>
                         {(daysOfTrade === null || validation(0, 1000, daysOfTrade)) ? <HiCheckCircle color='green' className='icon' /> : <HiBan color='red' className='icon' />}
@@ -121,14 +269,19 @@ export function Bot({ login }) {
                         <option value={'ML'}>Machine Learning алгоритм</option>
                         <option value={'Math'}>Математический алгоритм</option>
                     </select>
-                    <HiOutlineInformationCircle className='icon' />
+                    <div className='tooltip'>
+                        <HiOutlineInformationCircle className='icon' />
+                        <p className='tooltiptext' style={{ width: '20vw', right: '1vw' }}>Machine Learning алгоритм - алгоритм машинного обучения, который фильтрует решения на основе устойчивого тренда и дерева принятия решений, построенного на основе больших данных. Математический алгоритм ещё в разработке</p>
+                    </div>
                 </div>
+
 
                 <button className='startButton' onClick={acceptSettings}>
                     {active ? 'Применить настройки' : 'Изменить настройки'}
                 </button>
-                <button className='startButton'>{active ? 'Запустить бота' : 'Остановить бота'}</button>
+                <button className='startButton' onClick={runBot}>{botIsRunning ? 'Остановить бота' : 'Запустить бота'}</button>
             </div>
+            {/* <button onClick={sendPost}></button> */}
         </div >
     )
 }

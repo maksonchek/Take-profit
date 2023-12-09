@@ -1,7 +1,7 @@
-export const ToolTip = () => {
+export const ToolTip = ({ text }) => {
 
 
-    return <div>
-
+    return <div className="ToolTip">
+        <p>{text}</p>
     </div>
 }
