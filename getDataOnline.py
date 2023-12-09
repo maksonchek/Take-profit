@@ -24,11 +24,12 @@ def getCandles(start, end, tickers, period='D') -> pd.DataFrame:
       
       arr = []
       for one in c:
-         arr = [ticker, one.open, one.close, one.high, one.low, one.value, one.volume, one.begin, one.close]
+         arr = [ticker, one.open, one.close, one.high, one.low, one.value, one.volume, one.begin, one.end]
          df.loc[len(df.index)] = arr
       
       time.sleep(0.5) 
    
+   df = df.sort_values('begin')
    print("Данные о свечах получены")   
    return df    
 
@@ -255,6 +256,10 @@ if __name__ == '__main__':
    
    start(tickers, datetime.date(2023, 12, 7))
 
+#    df = getCandles(datetime.date(2020,1, 1), datetime.date.today(), tickers)
 
+#    df = df.sort_values('begin')
+
+#    df.to_csv("candles_2020-2023.csv", header=True, index=None, sep=";")
 
                   
