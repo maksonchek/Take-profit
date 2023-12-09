@@ -40,9 +40,9 @@ export function Home() {
                 <p className='mediumText'>«Волк с Уолл-стрит» (англ. The Wolf of Wall Street) — американская эпическая биографическая криминальная чёрная комедия режиссёра Мартина Скорсезе, основанная на одноимённых мемуарах Джордана Белфорта и вышедшая в мировой прокат 25 декабря 2013 года. Автором сценария выступил Теренс Уинтер. Главную роль исполнил Леонардо Ди Каприо, который выступил и продюсером картины. Эта роль принесла актёру четвёртую номинацию на «Оскар», третью номинацию на BAFTA и вторую премию «Золотой глобус». Это пятый совместный проект актёра со Скорсезе[3].   </p>
             </div>
             <div className='authorizationBox'>
-                <p>Логин</p>
+                <label>Логин</label>
                 <input type='text' className='input' onChange={(e) => setLogin(e.target.value)}></input>
-                <p>Пароль</p>
+                <label>Пароль</label>
                 <input type='password' className='input' onChange={(e) => setPassword(e.target.value)}></input>
                 <button className='enterButton' onClick={Click}>Войти</button>
             </div>

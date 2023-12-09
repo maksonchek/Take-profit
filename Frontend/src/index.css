@@ -194,11 +194,16 @@ body {
 
 .settingsInputDiv {
   width: 70%;
+  display: flex;
+  flex-direction: row;
+  height: 5%;
 }
 
 .settingsInput {
-  margin-top: 10px;
-  width: 100%;
+  width: 80%;
+  height: 3vh;
+  text-align: end;
+  font-size: 1.3rem;
 }
 
 .startButton {
@@ -214,4 +219,21 @@ body {
 
 .companySharesList {
   padding: 50px;
+}
+
+.settingsLabel {
+  width: 20vw;
+}
+
+
+.input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin: 0;
+  padding: 0;
+  width: 40px;
 }
