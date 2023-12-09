@@ -245,7 +245,7 @@ def start(tickers, day_stop):
         else:
                 pass
 
-        #ждём 2,5 минуты  
+        #ждём 2,5 минуты        
         time.sleep(150)
 
         #now_day = now_day + datetime.timedelta(days=1)

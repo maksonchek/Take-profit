@@ -11,10 +11,8 @@ def getDateRange(date1, date2):
         return dateList
 
 def getDataTicker(tickers, date1, date2, filename = None) -> pd.DataFrame:
-        #dates = getDateRange(date1, date2)
         orderstats = pd.DataFrame()
         #k = 0
-        #for date in dates:
         if tickers is not None:
                 for ticker in tickers:
                         url = f'https://iss.moex.com/iss/datashop/algopack/eq/orderstats/{ticker}.csv?from={date1}&till={date2}&iss.only=data'
@@ -23,15 +21,20 @@ def getDataTicker(tickers, date1, date2, filename = None) -> pd.DataFrame:
                         print("получил " + str(ticker))
                         time.sleep(0.5)
         else:
-                for cursor in range(25):
-                        url = f'https://iss.moex.com/iss/datashop/algopack/eq/orderstats.csv?from={date1}&till={date2}&start={cursor*1000}&iss.only=data'
-                        df = pd.read_csv(url, sep=';', skiprows=2)
-                        orderstats = pd.concat([orderstats, df])
-                        if df.shape[0] < 1000:
-                                break
-                        
-                        print("получил " + str(cursor) + " тысячу")            
-                        time.sleep(0.5)                
+                dates = getDateRange(date1, date2)
+                for date in dates:
+                        for cursor in range(25):
+                                url = f'https://iss.moex.com/iss/datashop/algopack/eq/orderstats.csv?date={date}&start={cursor*1000}&iss.only=data'
+                                df = pd.read_csv(url, sep=';', skiprows=2)
+                                df = df.dropna(axis=0, how='all')
+                                df = df.dropna(axis=1, how='all')
+                                orderstats = pd.concat([orderstats, df])
+                                if df.shape[0] < 1000:
+                                        break
+                                          
+                                time.sleep(0.5) 
+
+                        print("получил данные за " + date)                         
                  
         # k += 1 
         # if k % 3 == 0:
@@ -191,5 +194,5 @@ if __name__ == "__main__":
         getDataTicker(None, datetime.date(2023, 11, 1), datetime.date(2023, 12, 8), filenames[-1])
 
         for filename in filenames:
-                #getDataHourOrderStats(filename, False, tickers)
+                getDataHourOrderStats(filename, False, tickers)
                 joinCsv('hourorderstats-2020-2023.csv', "hour" + filename)
