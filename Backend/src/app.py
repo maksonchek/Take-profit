@@ -123,8 +123,8 @@ def get_stats(login):
         # Enter response
         ...
     else:
-        response = jsonify([{'name': 'NONE'}, {
-            'amount': 'NONE'}, {'PRICE': 'NONE'}, {'date': 'NONE'}])
+        response = jsonify([{'name': 'TINKOFF'}, {
+            'amount': '3'}, {'price': '150'}, {'action': 'sale'}, {'date': '2023-09-12T00:15:10'}])
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
