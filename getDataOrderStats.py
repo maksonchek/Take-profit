@@ -10,7 +10,7 @@ def getDateRange(date1, date2):
 
         return dateList
 
-def getDataTicker(tickers, date1, date2, filename):
+def getDataTicker(tickers, date1, date2, filename = None) -> pd.DataFrame:
         #dates = getDateRange(date1, date2)
         orderstats = pd.DataFrame()
         #k = 0
@@ -20,7 +20,7 @@ def getDataTicker(tickers, date1, date2, filename):
                         url = f'https://iss.moex.com/iss/datashop/algopack/eq/orderstats/{ticker}.csv?from={date1}&till={date2}&iss.only=data'
                         df = pd.read_csv(url, sep=';', skiprows=2)
                         orderstats = pd.concat([orderstats, df])
-                        print("получил" + str(ticker))
+                        print("получил " + str(ticker))
                         time.sleep(0.5)
         else:
                 for cursor in range(25):
@@ -29,20 +29,29 @@ def getDataTicker(tickers, date1, date2, filename):
                         orderstats = pd.concat([orderstats, df])
                         if df.shape[0] < 1000:
                                 break
-        
+                        
+                        print("получил " + str(cursor) + " тысячу")            
                         time.sleep(0.5)                
                  
         # k += 1 
         # if k % 3 == 0:
-                       
-        orderstats.to_csv(filename, index=None, sep=";")
-        print('данные получены')
+        
+        if filename is not None:               
+                orderstats.to_csv(filename, index=None, sep=";")
+                
+        print('данные о статиске заявок получены')
+        
+        return orderstats
 
-def getDataHourOrderStats(filename, tickers=None):
-        with open(filename, 'r') as orderstats:
-                readorderstats = csv.reader(orderstats, delimiter=";")
-                titles = next(readorderstats)
-                data = list(readorderstats)
+def getDataHourOrderStats(filename, isDF:bool = False, tickers=None) -> list:
+        if isDF is False:
+                with open(filename, 'r') as orderstats:
+                        readorderstats = csv.reader(orderstats, delimiter=";")
+                        titles = next(readorderstats)
+                        data = list(readorderstats)
+        else:
+                titles = list(filename)
+                data = filename.values.tolist()              
 
         new_data = [titles]
         hashtab = {}  
@@ -142,13 +151,16 @@ def getDataHourOrderStats(filename, tickers=None):
                                         new_data[-1][1] = str(hours.strftime("%H:%M:%S"))
                                         index += 1           
 
-        outputfile = "hour" + filename
-        with open(outputfile, 'w', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile, delimiter=';')
-                csv_writer.writerows(new_data)
+        if isDF is False:
+                outputfile = "hour" + filename
+                with open(outputfile, 'w', newline='', encoding='utf-8') as csvfile:
+                        csv_writer = csv.writer(csvfile, delimiter=';')
+                        csv_writer.writerows(new_data)
 
-        print("Файл " + outputfile + " записан")        
+                print("Файл " + outputfile + " записан")        
 
+        print('данные о статиске заявок обработаны')
+        
         return new_data
 
 def joinCsv(filename1: str, filename2: str) -> None:
@@ -179,5 +191,5 @@ if __name__ == "__main__":
         getDataTicker(None, datetime.date(2023, 11, 1), datetime.date(2023, 12, 8), filenames[-1])
 
         for filename in filenames:
-                #getDataHourOrderStats(filename, tickers)
+                #getDataHourOrderStats(filename, False, tickers)
                 joinCsv('hourorderstats-2020-2023.csv', "hour" + filename)
