@@ -12,6 +12,30 @@ const url = 'https://webservice-57a4.onrender.com';
 
 export function Bot({ login }) {
 
+    const [botIsRunning, setBotIsRunning] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get(url + '/' + login + '/trading/stats', {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            });
+
+            const dataset = response.data
+            setCompanyShares(dataset);
+            console.log('Fetching data from the server')
+        }
+
+
+        const timer = setInterval(() => {
+            if (botIsRunning) {
+                fetchData();
+            }
+        }, 10000);
+        return () => clearInterval(timer);
+    }, [botIsRunning]);
+
     useEffect(() => {
         console.log(login)
     }, [])
@@ -97,7 +121,6 @@ export function Bot({ login }) {
 
     const [algorithm, setAlgorithm] = useState('');
 
-    const [botIsRunning, setBotIsRunning] = useState(false);
 
     const validation = (min, max, value) => {
         if (value && value >= min && value <= max) {
