@@ -360,5 +360,5 @@ def get_next_file_number(folder_path):
     return next_number
 
 
-if __name__ == "__main__":
+def start_algo():
     ml_trade_algorithm(100, trade_days=7)
