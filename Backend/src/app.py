@@ -15,20 +15,16 @@ class GetDataOnline:
     @classmethod
     def start_algo(cls):
         # Проверяем, что поток не запущен и флаг установлен
-        print("I\'m in class")
-
         if cls.thread is None or not cls.thread.is_alive():
             cls.thread = threading.Thread(target=cls._algo_thread)
             cls.thread.start()
 
     @classmethod
     def _algo_thread(cls):
-        print("I\'m starting algo")
         getDataOnline.flag = True
         try:
             getDataOnline.start_algo()
         except Exception:
-            print("Ended cycle")
 
     @classmethod
     def stop_algo(cls):
@@ -94,11 +90,11 @@ def startbot(login):
     request_ = request.get_json()
     response = jsonify({'Answer': 'successful'})
     if request_["command"] == "start":
-        print("\nSwitch ON\n")
+        # print("\nSwitch ON\n")
         # getDataOnline.flag = True
         getDataOnline_.start_algo()
     else:
-        print("\nSwitch OFF\n")
+        # print("\nSwitch OFF\n")
         # getDataOnline.flag = False
         getDataOnline_.stop_algo()
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -107,24 +103,25 @@ def startbot(login):
 
 @app.route('/<login>/trading/stats', methods=["GET"])
 def get_stats(login):
-    #
-    #
-    # {
-    #     name: 'TINKOFF',
-    #     amount: 3,
-    #     price: 150,
-    #     action: 'sale',
-    #     date: '2023-09-12T00:15:10'
-    # },
-    #
-    #
     function_ = None
     if function_ != None:
         # Enter response
         ...
     else:
-        response = jsonify([{'name': 'TINKOFF'}, {
-            'amount': '3'}, {'price': '150'}, {'action': 'sale'}, {'date': '2023-09-12T00:15:10'}])
+        response = jsonify([
+            {
+                'name': 'TINKOFF',
+                'amount': '3',
+                'price': '150',
+                'action': 'sale',
+                'date': '2023-09-12T00:15:10'},
+            {
+                'name': 'SBER',
+                'amount': '5',
+                'price': '100',
+                'action': 'purchase',
+                'date': '2023-09-12T00:10:10'
+            }])
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 

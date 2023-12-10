@@ -1,1 +1,5 @@
-{"login": {"password": "gay"}, "gay": {"password": "gay"}, "artem": {"password": "penis123"}}
+{
+    "artem": {
+        "password": "qwerty123"
+    }
+}
