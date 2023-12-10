@@ -13,19 +13,13 @@ import warnings
 # Отключаем предупреждения от sklearn
 warnings.filterwarnings(action='ignore')
 
-
 destination_folder = '.'
-if not os.path.join(destination_folder, 'Weights'):
-    file_id = '1JSRVPGzLyjkcHvvYNNRxOODUOXPr9fnY'
-    url = f'https://drive.google.com/uc?id={file_id}'
-
-    output_file = os.path.join(destination_folder, 'archive.rar')
-    gdown.download(url, output_file, quiet=False)
-
-    patoolib.extract_archive(output_file, outdir=destination_folder)
-
-    os.remove(output_file)
-
+file_id = '1JSRVPGzLyjkcHvvYNNRxOODUOXPr9fnY'
+url = f'https://drive.google.com/uc?id={file_5id}'
+output_file = os.path.join(destination_folder, 'archive.rar')
+gdown.download(url, output_file, quiet=False)
+patoolib.extract_archive(output_file, outdir=destination_folder)
+os.remove(output_file)
 
 def define_trend(end_date):
     TREND_ANGLE = 30
