@@ -3,10 +3,10 @@ from flask_cors import CORS
 import json
 import threading
 import os
-from Algorithm import algo_test
+import algo_test
 # from misc import getDataOnline
 
-users_folder_path = '../../Algorithm/Logs'
+users_folder_path = 'Logs'
 app = Flask(__name__)
 CORS(app)
 
@@ -24,7 +24,7 @@ class GetDataOnline:
 
     @classmethod
     def _algo_thread(cls):
-        algo_test.stop_flag = True
+        algo_test.stop_flag = False
         # getDataOnline.flag = True
         try:
             algo_test.start_algo()
@@ -35,7 +35,7 @@ class GetDataOnline:
     @classmethod
     def stop_algo(cls):
         cls.flag = False
-        algo_test.stop_flag = False
+        algo_test.stop_flag = True
         # getDataOnline.flag = False
 
 
