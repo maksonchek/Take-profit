@@ -3,10 +3,10 @@ from flask_cors import CORS
 import json
 import threading
 import os
-# from ../../Algorithm import
-from misc import getDataOnline
+from Algorithm import algo_test
+# from misc import getDataOnline
 
-users_folder_path = '../../Algorithm/logs'
+users_folder_path = '../../Algorithm/Logs'
 app = Flask(__name__)
 CORS(app)
 
@@ -24,16 +24,19 @@ class GetDataOnline:
 
     @classmethod
     def _algo_thread(cls):
-        getDataOnline.flag = True
+        algo_test.stop_flag = True
+        # getDataOnline.flag = True
         try:
-            getDataOnline.start_algo()
+            algo_test.start_algo()
+            # getDataOnline.start_algo()
         except Exception:
             print("Ended cycle")
 
     @classmethod
     def stop_algo(cls):
         cls.flag = False
-        getDataOnline.flag = False
+        algo_test.stop_flag = False
+        # getDataOnline.flag = False
 
 
 getDataOnline_ = GetDataOnline()
@@ -118,26 +121,6 @@ def startbot(login):
 
 @app.route('/<login>/trading/stats', methods=["GET"])
 def get_stats(login):
-    # function_ = None
-    # if function_ != None:
-    #     # Enter response
-    #     ...
-    # else:
-    #     response = jsonify([
-    #         {
-    #             'name': 'TINKOFF',
-    #             'amount': '3',
-    #             'price': '150',
-    #             'action': 'sale',
-    #             'date': '2023-09-12T00:15:10'},
-    #         {
-    #             'name': 'SBER',
-    #             'amount': '5',
-    #             'action': 'purchase',
-    #             'date': '2023-09-12T00:10:10'
-    #         }])
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    # return response
     filenames = get_all_filenames()
 
     if filenames:
