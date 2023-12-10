@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export function Statistics() {
     return (
-        <div>
+        <div >
             Это страница со статистикой
         </div>
     )

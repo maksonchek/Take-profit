@@ -15,8 +15,11 @@ export function Header() {
                 </li>
 
 
-                <li>
+                {/* <li>
                     <Link className='link' to={'/statistics'}>Статистика</Link>
+                </li> */}
+                <li>
+                    <a className='link' href='https://www.moex.com/ru/algopack'>AlgoPack API</a>
                 </li>
             </ul>
         </nav>

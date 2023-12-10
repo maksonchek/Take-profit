@@ -188,7 +188,7 @@ body {
   align-items: center;
   margin-top: 7vh;
   background-color: white;
-  height: 80vh;
+  height: 67vh;
   width: 50vw;
   border-radius: 10px;
   margin-right: 5vw;
@@ -324,4 +324,31 @@ td {
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 3vh;
+  width: 50vw;
+  height: 10vh;
+  background: red;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.balance {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.list_desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 10px;
+  height: 60vh;
 }

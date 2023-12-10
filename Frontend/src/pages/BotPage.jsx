@@ -14,6 +14,8 @@ export function Bot({ login }) {
 
     const [botIsRunning, setBotIsRunning] = useState(false);
 
+    const [balance, setBalance] = useState(0);
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(url + '/' + login + '/trading/stats', {
@@ -24,9 +26,11 @@ export function Bot({ login }) {
 
             const dataset = response.data
             setCompanyShares(dataset);
+            if (companyShares[companyShares.length - 1]) {
+                setBalance(companyShares[companyShares.length - 1].balance);
+            }
             console.log('Fetching data from the server')
         }
-
 
         const timer = setInterval(() => {
             if (botIsRunning) {
@@ -45,69 +49,79 @@ export function Bot({ login }) {
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'TINKOFF',
             amount: 3,
             price: 150,
             action: 'sale',
-            date: '2023-09-12T00:15:10'
+            date: '2023-09-12T00:15:10',
+            balance: 1000221
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         }, {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 100023
         },
         {
             name: 'SBER',
             amount: 5,
             price: 100,
             action: 'purchase',
-            date: '2023-09-12T00:10:10'
+            date: '2023-09-12T00:10:10',
+            balance: 1337
         }
     ]);
 
@@ -131,21 +145,6 @@ export function Bot({ login }) {
         }
     }
 
-    const sendPost = async () => {
-        try {
-            const response = await axios.get(url + '/' + login + '/trading/stats',
-                {
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(data => { console.log(data); setCompanyShares(data) });
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-
-
     const acceptSettings = async () => {
         if (active) {
             try {
@@ -168,6 +167,7 @@ export function Bot({ login }) {
                         }
                     });
                     setActive(false);
+                    setBalance(capital * 1000);
                 }
                 else if (!validation(1, 1000, capital)) {
                     alert('Укажите стартовый капитал')
@@ -188,6 +188,7 @@ export function Bot({ login }) {
             }
         }
         else {
+            runBot();
             setActive(true)
         }
 
@@ -210,11 +211,9 @@ export function Bot({ login }) {
 
                 if (botIsRunning) {
                     setBotIsRunning(false);
-                    console.log(botIsRunning)
                 }
                 else {
                     setBotIsRunning(true);
-                    console.log(botIsRunning)
                 }
             }
             catch (error) {
@@ -228,26 +227,34 @@ export function Bot({ login }) {
 
     return (
         <div className='botPage'>
-            <div className='investMenu'>
-                <table className='tableShare'>
-                    <tr style={{ background: '#ff0507', color: 'white', height: '4vh' }}>
-                        <td align='middle' >Название акции</td>
-                        <td align='middle' valign='middle'>Количество акций</td>
-                        <td align='middle' valign='middle'>Цена</td>
-                        <td align='middle' valign='middle'>Тип операции</td>
-                        <td align='middle' valign='middle'>Дата</td>
-                    </tr>
-                    {companyShares.map((share) => {
-                        return <tr style={{ height: '3vh' }}>
-                            <td align='middle' valign='middle'>{share.name}</td>
-                            <td align='middle' valign='middle'>{share.amount}</td>
-                            <td align='middle' valign='middle'>{share.price}</td>
-                            <td align='middle' valign='middle'>{share.action}</td>
-                            <td align='middle' valign='middle'>{share.date}</td>
-                        </tr>
-                    })}
-                </table>
-
+            <div>
+                <div className='investMenu'>
+                    <table className='tableShare'>
+                        <thead>
+                            <tr style={{ background: '#ff0507', color: 'white', height: '4vh' }}>
+                                <td align='middle' >Название акции</td>
+                                <td align='middle' valign='middle'>Количество акций</td>
+                                <td align='middle' valign='middle'>Цена</td>
+                                <td align='middle' valign='middle'>Тип операции</td>
+                                <td align='middle' valign='middle'>Дата</td>
+                            </tr>
+                        </thead>
+                        {companyShares.map((share) => {
+                            return <tbody>
+                                <tr style={{ height: '3vh' }}>
+                                    <td align='middle' valign='middle'>{share.name}</td>
+                                    <td align='middle' valign='middle'>{share.amount}</td>
+                                    <td align='middle' valign='middle'>{share.price}</td>
+                                    <td align='middle' valign='middle'>{share.action}</td>
+                                    <td align='middle' valign='middle'>{share.date}</td>
+                                </tr>
+                            </tbody>
+                        })}
+                    </table>
+                </div>
+                <div className='stats'>
+                    <label className='balance' style={{ color: 'Black' }}>Баланс: {balance} рублей</label>
+                </div>
             </div>
             <div className='botSettings'>
                 <div className="settingsInputDiv">
