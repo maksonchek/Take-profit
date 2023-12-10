@@ -9,7 +9,6 @@ from moexalgo import Ticker
 from datetime import datetime, timedelta
 from sklearn.ensemble import RandomForestClassifier
 import joblib
-import time
 import json
 import os
 import gdown
@@ -173,7 +172,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
         if stop_flag:
             print("Algorithm stopped by user.")
             break  
-        
+
         trend_tickers = define_trend(today)
         long_trend_tickers = [i for i in trend_tickers if trend_tickers[i]]
         models = find_trend_models(long_trend_tickers, models_dict)
@@ -198,7 +197,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                     at = datetime.strptime(active['time'], '%H:%M:%S').time()
                     pt = datetime.strptime(prev_row['tradetime'], '%H:%M:%S').time()
 
-                    if at == pt:
+                    if at == pt or at != pt:
                         if row['pr_low'] <= active['price']*(1-stop_loss):
                             current_capital += active['price']*(1-stop_loss)*active['amount']
                             name = active['name']
