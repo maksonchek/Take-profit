@@ -1,0 +1,10 @@
+flask
+moexalgo
+flask_cors
+pandas
+gdown
+patoolib
+joblib
+sklearn
+numpy
+datetime
