@@ -2,8 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import threading
+import os
+# from ../../Algorithm import
 from misc import getDataOnline
 
+users_folder_path = '../../Algorithm/logs'
 app = Flask(__name__)
 CORS(app)
 
@@ -25,6 +28,7 @@ class GetDataOnline:
         try:
             getDataOnline.start_algo()
         except Exception:
+            print("Ended cycle")
 
     @classmethod
     def stop_algo(cls):
@@ -33,6 +37,17 @@ class GetDataOnline:
 
 
 getDataOnline_ = GetDataOnline()
+
+
+def get_all_filenames():
+    return [f for f in os.listdir(users_folder_path) if f.endswith('.json')]
+
+
+def read_and_remove_file(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    os.remove(file_path)
+    return data
 
 
 @app.route('/register_user', methods=['POST'])
@@ -103,27 +118,41 @@ def startbot(login):
 
 @app.route('/<login>/trading/stats', methods=["GET"])
 def get_stats(login):
-    function_ = None
-    if function_ != None:
-        # Enter response
-        ...
+    # function_ = None
+    # if function_ != None:
+    #     # Enter response
+    #     ...
+    # else:
+    #     response = jsonify([
+    #         {
+    #             'name': 'TINKOFF',
+    #             'amount': '3',
+    #             'price': '150',
+    #             'action': 'sale',
+    #             'date': '2023-09-12T00:15:10'},
+    #         {
+    #             'name': 'SBER',
+    #             'amount': '5',
+    #             'action': 'purchase',
+    #             'date': '2023-09-12T00:10:10'
+    #         }])
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    # return response
+    filenames = get_all_filenames()
+
+    if filenames:
+        all_data = []
+
+        for filename in filenames:
+            file_path = os.path.join(users_folder_path, filename)
+            data = read_and_remove_file(file_path)
+            all_data.extend(data)
+
+        response = jsonify(all_data)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     else:
-        response = jsonify([
-            {
-                'name': 'TINKOFF',
-                'amount': '3',
-                'price': '150',
-                'action': 'sale',
-                'date': '2023-09-12T00:15:10'},
-            {
-                'name': 'SBER',
-                'amount': '5',
-                'price': '100',
-                'action': 'purchase',
-                'date': '2023-09-12T00:10:10'
-            }])
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+        return jsonify([{}])
 
 
 if __name__ == '__main__':
