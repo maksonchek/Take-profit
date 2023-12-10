@@ -25,11 +25,16 @@ export function Bot({ login }) {
             });
 
             const dataset = response.data
-            setCompanyShares(dataset);
-            if (companyShares[companyShares.length - 1]) {
-                setBalance(companyShares[companyShares.length - 1].balance);
+            if (dataset.length > 1) {
+                setCompanyShares(old => [...old, ...dataset]);
             }
+
+            if (dataset[dataset.length - 1]['balance']) {
+                setBalance(dataset[dataset.length - 1]['balance']);
+            }
+
             console.log('Fetching data from the server')
+            console.log(dataset)
         }
 
         const timer = setInterval(() => {
@@ -44,85 +49,6 @@ export function Bot({ login }) {
         console.log(login)
     }, [])
     const [companyShares, setCompanyShares] = useState([
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'TINKOFF',
-            amount: 3,
-            price: 150,
-            action: 'sale',
-            date: '2023-09-12T00:15:10',
-            balance: 1000221
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        }, {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 100023
-        },
-        {
-            name: 'SBER',
-            amount: 5,
-            price: 100,
-            action: 'purchase',
-            date: '2023-09-12T00:10:10',
-            balance: 1337
-        }
     ]);
 
     const [capital, setCapital] = useState(null);
