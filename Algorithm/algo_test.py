@@ -400,6 +400,3 @@ def get_next_file_number(folder_path):
 
 def start_algo():
     ml_trade_algorithm(100, trade_days=15)
-
-
-start_algo()
