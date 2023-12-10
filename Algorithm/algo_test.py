@@ -221,7 +221,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                     pt = datetime.strptime(
                         prev_row['tradetime'], '%H:%M:%S').time()
 
-                    if at == pt:
+                    if True:
                         if row['pr_low'] <= active['price']*(1-stop_loss):
                             current_capital += active['price'] * \
                                 (1-stop_loss)*active['amount']
