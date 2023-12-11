@@ -14,19 +14,19 @@ import time
 # Отключаем предупреждения от sklearn
 warnings.filterwarnings(action='ignore')
 
-destination_folder = '.'
-file_id = '1JSRVPGzLyjkcHvvYNNRxOODUOXPr9fnY'
-url = f'https://drive.google.com/uc?id={file_id}'
-output_file = 'archive.rar'
-output_file = os.path.join(destination_folder, 'archive.rar')
-gdown.download(url, output_file, quiet=False)
-try:
-    patoolib.extract_archive(output_file, outdir=destination_folder)
-    os.remove(output_file)
+# destination_folder = '.'
+# file_id = '1JSRVPGzLyjkcHvvYNNRxOODUOXPr9fnY'
+# url = f'https://drive.google.com/uc?id={file_id}'
+# output_file = 'archive.rar'
+# output_file = os.path.join(destination_folder, 'archive.rar')
+# gdown.download(url, output_file, quiet=False)
+# try:
+#     patoolib.extract_archive(output_file, outdir=destination_folder)
+#     os.remove(output_file)
 
-except Exception as ex:
-    print(ex)
-    os.remove(output_file)
+# except Exception as ex:
+#     print(ex)
+#     os.remove(output_file)
 
 
 def define_trend(end_date):
@@ -396,6 +396,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
             today = datetime(today.year + 1, 1, 10)
         elif today.day == 16 and today.month == 11 and today.year == 2023:
             break
+        today = today + timedelta(days=1)
 
 
 def get_next_file_number(folder_path):
@@ -419,3 +420,6 @@ def get_next_file_number(folder_path):
 def start_algo(capital, loss_percent, trade_days=15):
     ml_trade_algorithm(
         capital=capital, loss_percent=loss_percent, trade_days=trade_days)
+
+
+# start_algo(100, 60)
