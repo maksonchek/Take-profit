@@ -189,7 +189,7 @@ stop_flag = False
 
 def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
     global stop_flag
-    today = datetime.strptime('2020-1-10', '%Y-%m-%d').date()
+    today = datetime.strptime('2022-1-10', '%Y-%m-%d').date()
     current_capital = capital * 1000
     stop_loss = 0.005
     take_profit = 1.01
