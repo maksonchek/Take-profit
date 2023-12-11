@@ -14,19 +14,19 @@ import time
 # Отключаем предупреждения от sklearn
 warnings.filterwarnings(action='ignore')
 
-destination_folder = '.'
-file_id = '1JSRVPGzLyjkcHvvYNNRxOODUOXPr9fnY'
-url = f'https://drive.google.com/uc?id={file_id}'
-output_file = 'archive.rar'
+# destination_folder = '.'
+# file_id = '1JSRVPGzLyjkcHvvYNNRxOODUOXPr9fnY'
+# url = f'https://drive.google.com/uc?id={file_id}'
+# output_file = 'archive.rar'
 # output_file = os.path.join(destination_folder, 'archive.rar')
-gdown.download(url, output_file, quiet=False)
-try:
-    patoolib.extract_archive(output_file, outdir=destination_folder)
-    os.remove(output_file)
+# gdown.download(url, output_file, quiet=False)
+# try:
+#     patoolib.extract_archive(output_file, outdir=destination_folder)
+#     os.remove(output_file)
 
-except Exception as ex:
-    print(ex)
-    os.remove(output_file)
+# except Exception as ex:
+#     print(ex)
+#     os.remove(output_file)
 
 
 def define_trend(end_date):
@@ -242,7 +242,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                                 combined_datetime_str, '%Y-%m-%dT%H:%M:%S')
                             actives.remove(active)
                             file_number = get_next_file_number('Logs')
-                            file_path = f'Logs/{file_number}_transaction.json'
+                            file_path = f'Logs/{file_number}.json'
 
                             try:
                                 with open(file_path, 'r') as file:
@@ -280,7 +280,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                                 combined_datetime_str, '%Y-%m-%dT%H:%M:%S')
                             actives.remove(active)
                             file_number = get_next_file_number('Logs')
-                            file_path = f'Logs/{file_number}_transaction.json'
+                            file_path = f'Logs/{file_number}.json'
 
                             try:
                                 with open(file_path, 'r') as file:
@@ -317,7 +317,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                                 combined_datetime_str, '%Y-%m-%dT%H:%M:%S')
                             actives.remove(active)
                             file_number = get_next_file_number('Logs')
-                            file_path = f'Logs/{file_number}_transaction.json'
+                            file_path = f'Logs/{file_number}.json'
 
                             try:
                                 with open(file_path, 'r') as file:
@@ -356,7 +356,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
 
                     if current_capital - buy_count*buy_price >= 0:
                         file_number = get_next_file_number('Logs')
-                        file_path = f'Logs/{file_number}_transaction.json'
+                        file_path = f'Logs/{file_number}.json'
                         current_capital -= buy_count*buy_price
                         try:
                             with open(file_path, 'r') as file:
@@ -382,28 +382,30 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                         actives.append({'name': name, 'amount': buy_count,
                                        'time': buy_time, 'date': duy_date, 'price': buy_price})
         today = today + timedelta(days=1)
+        print(today)
 
 
 def get_next_file_number(folder_path):
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-        return 1
+        return 100000
 
     existing_files = [f for f in os.listdir(
-        folder_path) if f.endswith(".json") and '_' in f]
+        folder_path) if f.endswith(".json")]
 
     if not existing_files:
-        return 1
+        return 100000
 
-    existing_numbers = [int(f.split("_")[0]) for f in existing_files]
+    existing_numbers = [int(f.split(".")[0]) for f in existing_files]
 
     next_number = max(existing_numbers) + 1
 
     return next_number
 
 
-def start_algo():
-    ml_trade_algorithm(100, trade_days=15)
+def start_algo(capital, loss_percent, trade_days=15):
+    ml_trade_algorithm(
+        capital=capital, loss_percent=loss_percent, trade_days=trade_days)
 
 
-# start_algo()
+# start_algo(100, 15)

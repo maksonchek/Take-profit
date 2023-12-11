@@ -1,7 +1,6 @@
 FROM ubuntu 
 
 COPY Backend/src/ /opt/
-COPY Algorithm /opt/
 
 WORKDIR /opt/
 

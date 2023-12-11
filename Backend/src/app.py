@@ -16,21 +16,22 @@ class GetDataOnline:
     thread = None
 
     @classmethod
-    def start_algo(cls):
+    def start_algo(cls, capital, percent, days):
         # Проверяем, что поток не запущен и флаг установлен
         if cls.thread is None or not cls.thread.is_alive():
-            cls.thread = threading.Thread(target=cls._algo_thread)
+            cls.thread = threading.Thread(
+                target=cls._algo_thread, args=(capital, percent, days))
             cls.thread.start()
 
     @classmethod
-    def _algo_thread(cls):
+    def _algo_thread(cls, capital, percent, days):
         algo_test.stop_flag = False
         # getDataOnline.flag = True
-        try:
-            algo_test.start_algo()
-            # getDataOnline.start_algo()
-        except Exception:
-            print("Ended cycle")
+        # try:
+        algo_test.start_algo(capital, percent, days)
+        # getDataOnline.start_algo()
+        # except Exception as ex:
+        #     print(f"Ended cycle with ex:\n{ex}")
 
     @classmethod
     def stop_algo(cls):
@@ -43,7 +44,7 @@ getDataOnline_ = GetDataOnline()
 
 
 def get_all_filenames():
-    return [f for f in os.listdir(users_folder_path) if f.endswith('.json')]
+    return sorted([f for f in os.listdir(users_folder_path) if f.endswith('.json')])
 
 
 def read_and_remove_file(file_path):
@@ -107,10 +108,22 @@ def handle_post_request(login):
 def startbot(login):
     request_ = request.get_json()
     response = jsonify({'Answer': 'successful'})
+    with open('user_info/users.json', 'r') as f:
+        user_json = json.load(f)
+        if login not in user_json:
+            response = jsonify({'Answer': 'User did not found'})
+            return response
+
+    with open(f'user_info/{login}.json', 'r') as f:
+        usr_info_json = json.load(f)
+        capital = int(usr_info_json["fond"])
+        percent = int(usr_info_json["percentOfPossibleLoss"])
+        days = int(usr_info_json["daysOfTrade"])
+
     if request_["command"] == "start":
         # print("\nSwitch ON\n")
         # getDataOnline.flag = True
-        getDataOnline_.start_algo()
+        getDataOnline_.start_algo(capital, percent, days)
     else:
         # print("\nSwitch OFF\n")
         # getDataOnline.flag = False
@@ -122,6 +135,8 @@ def startbot(login):
 @app.route('/<login>/trading/stats', methods=["GET"])
 def get_stats(login):
     filenames = get_all_filenames()
+
+    print(filenames)
 
     if filenames:
         all_data = []
@@ -135,7 +150,7 @@ def get_stats(login):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     else:
-        return jsonify([{}])
+        return jsonify([{"Size of array": len(filenames)}])
 
 
 if __name__ == '__main__':
