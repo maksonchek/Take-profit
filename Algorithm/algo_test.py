@@ -382,7 +382,7 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                         actives.append({'name': name, 'amount': buy_count,
                                        'time': buy_time, 'date': duy_date, 'price': buy_price})
                           # Проверяем, является ли today 16 числом сентября, ноября, января или марта
-        if today.day == 16 and today.month in [9, 1, 3]:
+        if today.day == 15 and today.month in [9, 1, 3]:
             next_month = 9
             if today.month == 9:
                 next_month = 11
@@ -390,12 +390,13 @@ def ml_trade_algorithm(capital, loss_percent=None, trade_days=None):
                 next_month = 3
             elif today.month == 3:
                 next_month = 9
-            new_date = datetime(today.year, next_month, 10)
+            new_date = datetime(today.year, next_month, 10).date()
             today = new_date
-        elif today.day == 16 and today.month == 11 and today.year != 2023:
-            today = datetime(today.year + 1, 1, 10)
-        elif today.day == 16 and today.month == 11 and today.year == 2023:
+        elif today.day == 15 and today.month == 11 and today.year != 2023:
+            today = datetime(today.year + 1, 1, 10).date()
+        elif today.day == 15 and today.month == 11 and today.year == 2023:
             break
+
         today = today + timedelta(days=1)
 
 
